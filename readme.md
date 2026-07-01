@@ -11,13 +11,15 @@
 
 </div>
 
-<a href='https://space.bilibili.com/3546868449544308'><img src="https://img.shields.io/badge/bilibili-00A1D6.svg?logo=bilibili&logoColor=white" /></a>&nbsp;
-<a href='https://www.youtube.com/@AI-Creator-is-here'><img src='https://badges.aleen42.com/src/youtube.svg' /></a>&nbsp;
+<a href='https://space.bilibili.com/3546868449544308'><img src="https://img.shields.io/badge/bilibili-00A1D6?style=for-the-badge&logo=bilibili&logoColor=white&labelColor=1a1a2e" /></a>&nbsp;
+<a href='https://www.youtube.com/@AI-Creator-is-here'><img src="https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white&labelColor=1a1a2e" /></a>&nbsp;
 <br>
 <a href="./Communication.md"><img src="https://img.shields.io/badge/💬Feishu-Group-07c160?style=for-the-badge&logoColor=white&labelColor=1a1a2e"></a>
 <a href="./Communication.md"><img src="https://img.shields.io/badge/WeChat-Group-07c160?style=for-the-badge&logo=wechat&logoColor=white&labelColor=1a1a2e"></a>
 <br>
 <a href='https://arxiv.org/pdf/2606.23327'><img src='https://img.shields.io/badge/arXiv-2606.23327-b31b1b?style=for-the-badge&logo=arxiv&logoColor=white&labelColor=1a1a2e' /></a>
+<br>
+<a href="https://trendshift.io/repositories/18548" target="_blank"><img src="https://trendshift.io/api/badge/repositories/18548" alt="HKUDS%2FVideoAgent | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
 </div>
 
