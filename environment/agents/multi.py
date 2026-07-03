@@ -1,3 +1,4 @@
+import ast
 import json
 import logging
 import re
@@ -98,7 +99,9 @@ Note! Don't output any analysis and explanations!
             if match:
                 intents_list = match.group(0)
                 print("Filtered intents_list：\n", intents_list)
-                return eval(intents_list)
+                # Use literal_eval instead of eval: the string comes from LLM
+                # output, so eval() would execute arbitrary Python code.
+                return ast.literal_eval(intents_list)
             else:
                 raise ValueError("No valid intent list found in response")
         except Exception as e:
@@ -350,7 +353,7 @@ Please Only output pure JSON format:
                             print(f"Intent analysis returned empty list")
                     except Exception as e:
                         logging.warning(f"Intent analysis attempt {attempt + 1} failed: {e}")
-                        if attempt == MAX_Retries:
+                        if attempt == MAX_Retries - 1:
                             logging.error(f"Reached max retries for intent analysis")
                             return 1
             else:
@@ -370,19 +373,22 @@ Please Only output pure JSON format:
                         previous_user_input_graph,
                         graph_reflection
                     )
+                    if not agent_data:
+                        print(f"Agent graph generation returned empty value")
+                        if attempt == MAX_Retries - 1:
+                            logging.error(f"Reached max retries for agent graph generation")
+                            return 1
+                        continue
                     previous_agent_graph = agent_data["Agent Graph"]
                     previous_agent_chain = agent_data["Agent Chain"]
                     previous_user_input_graph = agent_data["User Input Graph"]
-                    if agent_data:
-                        print(f"Agent graph generated successfully")
-                        try:
-                            agent_chain = agent_data["Agent Chain"]
-                            print("First possible execution order:", agent_chain)
-                        except ValueError as e:
-                            print("Error:", e)
-                        break
-                    else:
-                        print(f"Agent graph generation returned empty value")
+                    print(f"Agent graph generated successfully")
+                    try:
+                        agent_chain = agent_data["Agent Chain"]
+                        print("First possible execution order:", agent_chain)
+                    except ValueError as e:
+                        print("Error:", e)
+                    break
                 except Exception as e:
                     logging.warning(f"Agent graph generation attempt {attempt + 1} failed: {e}")
                     if attempt == MAX_Retries - 1:
@@ -444,6 +450,12 @@ Please Only output pure JSON format:
     def run(self):
         requirement = input("User Requirement:")
         result = self.process_requirement(requirement)
+        # process_requirement returns an int (1) instead of a dict when it
+        # fails to converge on a valid plan. Guard against that here so the
+        # program exits cleanly instead of raising a TypeError on lookup.
+        if not isinstance(result, dict):
+            print("Failed to generate a valid agent plan after multiple attempts. Exiting.")
+            return
         agent_graph = result["Agent Graph"]
         agent_chain = result["Agent Chain"]
         user_input_graph = result["User Input Graph"]
